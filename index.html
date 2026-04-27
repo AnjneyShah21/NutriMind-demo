@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriMind — Context-Aware Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/onboarding.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/meal-detail.css">
+<link rel="stylesheet" href="css/profile-history.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     SCREEN 1: ONBOARDING
+════════════════════════════════════ -->
+<div id="screen-onboard" class="screen active">
+
+  <div class="pro-tip">
+    <div class="pro-tip-label">💡 PRO TIP</div>
+    <p>Accuracy matters! Precise weight and activity data help NutriMind calculate your TDEE within 95% accuracy.</p>
+  </div>
+
+  <div class="brand">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+    </div>
+    <h1>NutriMind</h1>
+    <h2>Build Your Health Profile</h2>
+    <p>Tell us a bit about yourself so our context-aware coach can design your perfect plan.</p>
+  </div>
+
+  <div class="onboard-card">
+    <div class="form-row">
+      <div class="form-group">
+        <label>AGE <span class="info">i</span></label>
+        <input type="number" id="inp-age" placeholder="e.g. 28" min="10" max="100">
+      </div>
+      <div class="form-group">
+        <label>CURRENT WEIGHT (KG) <span class="info">i</span></label>
+        <input type="number" id="inp-weight" placeholder="e.g. 72" min="30" max="250">
+      </div>
+    </div>
+
+    <div class="section-label">PRIMARY GOAL</div>
+    <div class="goal-btns">
+      <button class="goal-btn active" data-goal="Weight Loss" onclick="selectGoal(this)">
+        <div class="icon">🏃</div>
+        <div class="label">Weight Loss</div>
+      </button>
+      <button class="goal-btn" data-goal="Muscle Gain" onclick="selectGoal(this)">
+        <div class="icon">💪</div>
+        <div class="label">Muscle Gain</div>
+      </button>
+      <button class="goal-btn" data-goal="Maintenance" onclick="selectGoal(this)">
+        <div class="icon">⚖️</div>
+        <div class="label">Maintenance</div>
+      </button>
+    </div>
+
+    <div class="two-col">
+      <div class="form-group">
+        <label>DIETARY PREFERENCE</label>
+        <div class="select-wrap">
+          <select id="inp-diet">
+            <option>No Restriction</option>
+            <option>Vegetarian</option>
+            <option>Vegan</option>
+            <option>Keto</option>
+            <option>Paleo</option>
+            <option>Gluten-Free</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>WEEKLY BUDGET</label>
+        <div class="toggle-group">
+          <button class="toggle-btn" onclick="selectToggle(this, 'budget')">Low</button>
+          <button class="toggle-btn active" onclick="selectToggle(this, 'budget')">Medium</button>
+          <button class="toggle-btn" onclick="selectToggle(this, 'budget')">High</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="form-group">
+        <label>ACTIVITY LEVEL</label>
+        <div class="select-wrap">
+          <select id="inp-activity">
+            <option>Sedentary (Office job)</option>
+            <option>Lightly Active</option>
+            <option>Moderately Active</option>
+            <option>Very Active</option>
+            <option>Athlete</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>COOKING TIME (DAILY)</label>
+        <div class="select-wrap">
+          <select id="inp-cook">
+            <option>&lt; 15 mins</option>
+            <option>15–30 mins</option>
+            <option>30–60 mins</option>
+            <option>60+ mins</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="goToDashboard()">
+      Complete Profile →
+    </button>
+    <p class="cta-note">You can update these settings at any time from your dashboard.</p>
+  </div>
+
+  <div class="footer-links">
+    <span class="lock-icon">🔒 HIPAA COMPLIANT SECURITY</span>
+    <div><a href="#">PRIVACY</a> &nbsp; <a href="#">TERMS</a></div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 2: APP (Dashboard + Meal Detail + Profile + History)
+════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+      </div>
+      <div>
+        <div class="sidebar-name">NutriMind</div>
+        <div class="sidebar-sub">Context-Aware Coach</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showTab('dashboard', this)" id="nav-dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="showTab('profile', this)" id="nav-profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Profile
+      </div>
+      <div class="nav-item" onclick="showTab('history', this)" id="nav-history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </div>
+    </nav>
+    <div class="sidebar-coach">
+      <div class="coach-avatar">A</div>
+      <div class="coach-info">
+        <div class="coach-name">Coach Alex</div>
+        <div class="coach-status">Online &amp; Syncing</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- TOP BAR -->
+    <div class="topbar" id="main-topbar">
+      <div class="topbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search insights…
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-icon-btn" onclick="showToast('🔔 No new notifications', 'green')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <button class="topbar-icon-btn" onclick="showTab('profile', document.getElementById('nav-profile'))">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+        </button>
+        <div class="topbar-avatar" onclick="showTab('profile', document.getElementById('nav-profile'))">A</div>
+      </div>
+    </div>
+
+    <!-- MEAL TOPBAR (hidden by default) -->
+    <div class="topbar" id="meal-topbar" style="display:none;">
+      <button class="back-btn" onclick="closeMealDetail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="topbar-title">Meal Details</span>
+      <div class="topbar-actions">
+        <div class="topbar-search" style="max-width:200px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search recipes…
+        </div>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD TAB ── -->
+    <div class="tab-panel active" id="tab-dashboard">
+      <div class="greeting-card">
+        <div class="greeting-text">
+          <h2 id="greeting-text">Morning, Alexander 👋</h2>
+          <p>Based on your sleep data (7h 20m) and high morning cortisol focus, we recommend a low-glycemic breakfast with 35g of protein to stabilize energy through your 10 AM meeting.</p>
+        </div>
+        <div class="greeting-stats">
+          <div class="stat-pill">
+            <div class="val">1.2L</div>
+            <div class="key">Hydration</div>
+          </div>
+          <div class="stat-pill">
+            <div class="val">88%</div>
+            <div class="key">Focus</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-left">
+
+          <!-- Habit Tracker -->
+          <div class="card">
+            <div class="card-title">Daily Habit Tracker <span class="badge">WEEK 4</span></div>
+            <div class="habit-stats">
+              <div class="habit-stat">
+                <div class="hs-val">12</div>
+                <div class="hs-key">STREAK</div>
+              </div>
+              <div class="habit-stat">
+                <div class="hs-val">94%</div>
+                <div class="hs-key">CONSISTENCY</div>
+              </div>
+            </div>
+
+            <div class="section-label" style="margin-bottom:8px;">TODAY'S LOG</div>
+            <div class="meal-item" onclick="openMealDetail('breakfast')">
+              <div class="meal-dot logged"></div>
+              <div class="meal-info">
+                <div class="meal-name">Balanced Breakfast</div>
+                <div class="meal-sub">08:00 AM · 433 kcal</div>
+              </div>
+              <div class="meal-cal">+4 pts</div>
+            </div>
+            <div class="meal-item" onclick="openMealDetail('lunch')">
+              <div class="meal-dot scheduled"></div>
+              <div class="meal-info">
+                <div class="meal-name">Post-Workout Lunch</div>
+                <div class="meal-sub">Scheduled for 12:45 PM</div>
+              </div>
+              <button class="log-now-btn" onclick="event.stopPropagation(); logMeal(this)">Log Now</button>
+            </div>
+            <div class="meal-item" onclick="openMealDetail('dinner')">
+              <div class="meal-dot scheduled"></div>
+              <div class="meal-info">
+                <div class="meal-name">Recovery Dinner</div>
+                <div class="meal-sub">Plan: Salmon &amp; Asparagus</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vitality Scores -->
+          <div class="card">
+            <div class="card-title">Vitality Scores</div>
+            <div class="vitality-grid">
+              <div class="vit-card green">
+                <div class="vit-val">82</div>
+                <div class="vit-unit">/100</div>
+                <div class="vit-key">Overall Vitality</div>
+                <div class="vit-change">↑ 3.2% vs last week</div>
+              </div>
+              <div class="vit-card blue">
+                <div class="vit-val">74</div>
+                <div class="vit-unit">stable</div>
+                <div class="vit-key">Cognitive Index</div>
+              </div>
+              <div class="vit-card red">
+                <div class="vit-val" style="font-size:18px;padding-top:6px;">LOW</div>
+                <div class="vit-key">Inflammation Risk</div>
+                <div class="vit-badge low">Optimal recovery</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="dash-right">
+
+          <!-- Recommendations -->
+          <div class="card">
+            <div class="rec-header">
+              <h3>Recommended for You</h3>
+              <span class="view-all" onclick="showToast('📋 Viewing all meal plans')">View All Meals</span>
+            </div>
+            <div class="rec-cards">
+              <div class="rec-card" onclick="openMealDetail('avocado')">
+                <div class="rec-card-img" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);">
+                  🥑
+                  <span class="rec-score">82</span>
+                  <span class="rec-heart" onclick="event.stopPropagation(); toggleHeart(this)">🤍</span>
+                </div>
+                <div class="rec-card-body">
+                  <div class="rec-title">Avocado &amp; Grain Bowl</div>
+                  <div class="rec-desc">High fibre meal for digestive health and satiety</div>
+                  <div class="rec-macros">
+                    <span class="rm">KCAL <span>520</span></span>
+                    <span class="rm">PRO <span>22g</span></span>
+                    <span class="rm">FAT <span>18g</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="rec-card" onclick="openMealDetail('salmon')">
+                <div class="rec-card-img" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2);">
+                  🍣
+                  <span class="rec-score">88</span>
+                  <span class="rec-heart" onclick="event.stopPropagation(); toggleHeart(this)">🤍</span>
+                </div>
+                <div class="rec-card-body">
+                  <div class="rec-title">Miso-Glazed Salmon</div>
+                  <div class="rec-desc">Rich in Omega-3 for cognitive performance</div>
+                  <div class="rec-macros">
+                    <span class="rm">KCAL <span>480</span></span>
+                    <span class="rm">PRO <span>34g</span></span>
+                    <span class="rm">FAT <span>16g</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Macro Distribution -->
+          <div class="card">
+            <div class="card-title">Daily Macro Distribution</div>
+            <div class="macro-dist">
+              <div class="macro-ring-wrap">
+                <div class="macro-ring protein">
+                  <div class="macro-ring-inner">75%</div>
+                </div>
+                <div class="macro-pct">75%</div>
+                <div class="macro-label">Protein</div>
+              </div>
+              <div class="macro-ring-wrap">
+                <div class="macro-ring carbs">
+                  <div class="macro-ring-inner">45%</div>
+                </div>
+                <div class="macro-pct">45%</div>
+                <div class="macro-label">Carbs</div>
+              </div>
+              <div class="macro-ring-wrap">
+                <div class="macro-ring fats">
+                  <div class="macro-ring-inner">50%</div>
+                </div>
+                <div class="macro-pct">50%</div>
+                <div class="macro-label">Fats</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MEAL DETAIL TAB ── -->
+    <div class="tab-panel" id="tab-meal">
+      <div class="meal-detail-layout">
+        <div class="meal-left">
+          <div class="meal-hero" id="meal-hero-emoji">🍣</div>
+          <div class="meal-tags">
+            <span class="meal-tag">🔥 High Protein</span>
+            <span class="meal-tag">🌿 Gluten-Free</span>
+            <span class="meal-tag">⏱ 18 mins</span>
+          </div>
+
+          <div class="context-card">
+            <div class="context-row">
+              <div class="context-item">
+                <span class="ci-icon">💰</span>
+                <div class="ci-text"><strong>Budget Fit</strong>This meal costs roughly $8.40, comfortable within your $10/meal target.</div>
+              </div>
+              <div class="context-item">
+                <span class="ci-icon">⏰</span>
+                <div class="ci-text"><strong>Time Saver</strong>Ready in 18 minutes. Perfect for your 20-min lunch window.</div>
+              </div>
+            </div>
+            <div class="context-quote">
+              "This recipe uses the salmon you bought on Tuesday, preventing food waste and keeping you on track for your protein goal."
+            </div>
+          </div>
+
+          <div class="ingredients-section">
+            <div class="ingredients-header">
+              <h3>Ingredients</h3>
+              <div class="servings-ctrl">
+                <span>Servings</span>
+                <button class="srv-btn" onclick="adjustServings(-1)">−</button>
+                <span id="serving-count">2</span>
+                <button class="srv-btn" onclick="adjustServings(1)">+</button>
+                <button class="log-now-btn" onclick="showToast('✏️ Adjust mode activated')" style="margin-left:4px;">Adjust</button>
+              </div>
+            </div>
+            <ul class="ingredient-list" id="ingredient-list">
+              <li><span class="ing-name">Fresh Atlantic Salmon Fillet</span><span class="ing-amt">350g</span></li>
+              <li><span class="ing-name">Organic Quinoa</span><span class="ing-amt">1 cup cooked</span></li>
+              <li><span class="ing-name">Persian Cucumbers</span><span class="ing-amt">2 small</span></li>
+              <li><span class="ing-name">Tahini &amp; Lemon Dressing</span><span class="ing-amt">2 tbsp</span></li>
+              <li><span class="ing-name">Cherry Tomatoes</span><span class="ing-amt">100g</span></li>
+              <li><span class="ing-name">Roasted Chickpeas</span><span class="ing-amt">80g</span></li>
+            </ul>
+          </div>
+
+          <button class="cart-btn" onclick="showToast('🛒 Missing items added to cart!')">
+            🛒 Add Missing Items to Cart
+          </button>
+
+          <!-- Related Meals -->
+          <div class="related-section">
+            <h3>Related Meals for Your Context</h3>
+            <div class="related-cards">
+              <div class="rel-card" onclick="openMealDetail('avocado')">
+                <div class="rel-card-img" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);">🥑</div>
+                <div class="rel-card-body">
+                  <div class="rel-tag">QUICK PREP</div>
+                  <div class="rel-name">Avocado &amp; Egg Power Bowl</div>
+                  <div class="rel-meta">12 min · <span class="rel-cal">340 kcal</span></div>
+                </div>
+              </div>
+              <div class="rel-card" onclick="openMealDetail('chickpea')">
+                <div class="rel-card-img" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);">🥗</div>
+                <div class="rel-card-body">
+                  <div class="rel-tag">LOW CALORIE</div>
+                  <div class="rel-name">Tuscan Chickpea Salad</div>
+                  <div class="rel-meta">10 min · <span class="rel-cal">380 kcal</span></div>
+                </div>
+              </div>
+              <div class="rel-card" onclick="openMealDetail('bean')">
+                <div class="rel-card-img" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0);">🫘</div>
+                <div class="rel-card-body">
+                  <div class="rel-tag">BUDGET OPTION</div>
+                  <div class="rel-name">Slow-Cooker Bean Medley</div>
+                  <div class="rel-meta">5 min prep · <span class="rel-cal">420 kcal</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="meal-right">
+          <div class="meal-name-h" id="meal-detail-name">Zesty Salmon &amp; Quinoa Superbowl</div>
+          <div class="meal-meta-tags">
+            <span class="meta-tag green">High Protein</span>
+            <span class="meta-tag blue">Gluten-Free</span>
+            <span class="meta-tag orange">Omega-3 Rich</span>
+          </div>
+
+          <div class="nutri-score-row">
+            <div>
+              <div class="nutri-score">94</div>
+              <div class="nutri-score-label">NUTRI SCORE</div>
+            </div>
+            <div style="border-left:1px solid var(--border);padding-left:16px;">
+              <div class="calories">640</div>
+              <div class="calories-label">CALORIES</div>
+            </div>
+          </div>
+
+          <div class="macros-section">
+            <h4>MACROS BREAKDOWN</h4>
+            <div class="macro-bar-item">
+              <div class="macro-bar-header"><span class="mn">Protein</span><span class="mv">42g</span></div>
+              <div class="macro-bar-track"><div class="macro-bar-fill protein" style="width:78%"></div></div>
+            </div>
+            <div class="macro-bar-item">
+              <div class="macro-bar-header"><span class="mn">Carbs</span><span class="mv">52g</span></div>
+              <div class="macro-bar-track"><div class="macro-bar-fill carbs" style="width:55%"></div></div>
+            </div>
+            <div class="macro-bar-item">
+              <div class="macro-bar-header"><span class="mn">Fats</span><span class="mv">19g</span></div>
+              <div class="macro-bar-track"><div class="macro-bar-fill fats" style="width:35%"></div></div>
+            </div>
+          </div>
+
+          <div class="micros-section">
+            <h4>MICRONUTRIENTS</h4>
+            <div class="micros-grid">
+              <div class="micro-item"><span class="mi-name">Vitamin D</span><span class="mi-val">15%</span></div>
+              <div class="micro-item"><span class="mi-name">Iron</span><span class="mi-val">22%</span></div>
+              <div class="micro-item"><span class="mi-name">B-12</span><span class="mi-val">88%</span></div>
+              <div class="micro-item"><span class="mi-name">Potassium</span><span class="mi-val">12%</span></div>
+              <div class="micro-item"><span class="mi-name">Fiber</span><span class="mi-val">6g</span></div>
+              <div class="micro-item"><span class="mi-name">Sodium</span><span class="mi-val high">420mg</span></div>
+            </div>
+          </div>
+
+          <button class="log-btn" id="main-log-btn" onclick="logThisMeal()">
+            📊 Log this Meal
+          </button>
+          <button class="fav-btn" id="fav-btn" onclick="toggleFav()">
+            🤍 Save to Favorites
+          </button>
+
+          <!-- Daily Goal Progress -->
+          <div style="margin-top:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;font-weight:600;">Daily Goal</div>
+              <div style="font-size:11px;font-weight:700;color:var(--green);" id="daily-goal-pct">82%</div>
+            </div>
+            <div class="macro-bar-track" style="height:10px;">
+              <div class="macro-bar-fill protein" id="daily-goal-bar" style="width:82%"></div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;" id="daily-goal-nums">1,865 / 2,250 kcal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFILE TAB ── -->
+    <div class="tab-panel" id="tab-profile">
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:20px;">My Profile</div>
+      <div class="profile-layout">
+        <div>
+          <div class="profile-hero-card">
+            <div class="profile-avatar-lg" id="profile-avatar-letter">A</div>
+            <div class="profile-hero-name" id="profile-name">Alexander</div>
+            <div class="profile-hero-sub">Member since April 2026</div>
+            <div class="profile-stats-row">
+              <div class="ps"><div class="pv" id="profile-goal-stat">WL</div><div class="pk">GOAL</div></div>
+              <div class="ps"><div class="pv">28</div><div class="pk">AGE</div></div>
+              <div class="ps"><div class="pv" id="profile-weight">72</div><div class="pk">KG</div></div>
+            </div>
+            <div class="goal-prog">
+              <div class="goal-prog-label"><span>Goal Progress</span><span>82%</span></div>
+              <div class="goal-prog-track"><div class="goal-prog-fill"></div></div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div class="card">
+              <div class="card-title">Recent Meals</div>
+              <div class="meal-history-list">
+                <div class="mh-item" onclick="openMealDetail('salmon')">
+                  <div class="mh-emoji">🍣</div>
+                  <div class="mh-info">
+                    <div class="mh-name">Zesty Salmon Superbowl</div>
+                    <div class="mh-time">Today, 12:45 PM</div>
+                  </div>
+                  <div class="mh-cal">640 kcal</div>
+                </div>
+                <div class="mh-item" onclick="openMealDetail('avocado')">
+                  <div class="mh-emoji">🥑</div>
+                  <div class="mh-info">
+                    <div class="mh-name">Avocado Grain Bowl</div>
+                    <div class="mh-time">Today, 8:00 AM</div>
+                  </div>
+                  <div class="mh-cal">433 kcal</div>
+                </div>
+                <div class="mh-item" onclick="openMealDetail('chickpea')">
+                  <div class="mh-emoji">🥗</div>
+                  <div class="mh-info">
+                    <div class="mh-name">Tuscan Chickpea Salad</div>
+                    <div class="mh-time">Yesterday, 1:00 PM</div>
+                  </div>
+                  <div class="mh-cal">380 kcal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="profile-metrics">
+            <div class="metric-card">
+              <div class="metric-label">Current Weight</div>
+              <div><span class="metric-val" id="pm-weight">72</span> <span class="metric-unit">kg</span></div>
+              <div class="metric-change">↓ 2.4kg this month</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:70%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Daily Calories</div>
+              <div><span class="metric-val">1865</span> <span class="metric-unit">kcal</span></div>
+              <div class="metric-change">of 2,250 goal</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:83%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Protein Intake</div>
+              <div><span class="metric-val">112</span> <span class="metric-unit">g</span></div>
+              <div class="metric-change">of 140g target</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:80%;background:var(--blue)"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Water Intake</div>
+              <div><span class="metric-val">1.2</span> <span class="metric-unit">L</span></div>
+              <div class="metric-change">of 2.5L goal</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:48%;background:var(--orange)"></div></div>
+            </div>
+            <div class="metric-card" style="grid-column:1/-1;">
+              <div class="metric-label">BMI</div>
+              <div><span class="metric-val">22.4</span> <span class="metric-unit">— Normal Range</span></div>
+              <div class="metric-change">Healthy 18.5–24.9</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:55%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HISTORY TAB ── -->
+    <div class="tab-panel" id="tab-history">
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:20px;">Meal History</div>
+
+      <div class="history-week">
+        <div class="day-pill" onclick="selectDay(this)"><div class="dp-day">MON</div><div class="dp-num">21</div><div class="dp-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)"><div class="dp-day">TUE</div><div class="dp-num">22</div><div class="dp-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)"><div class="dp-day">WED</div><div class="dp-num">23</div><div class="dp-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)"><div class="dp-day">THU</div><div class="dp-num">24</div><div class="dp-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)"><div class="dp-day">FRI</div><div class="dp-num">25</div><div class="dp-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)"><div class="dp-day">SAT</div><div class="dp-num">26</div><div class="dp-dot empty"></div></div>
+        <div class="day-pill active" onclick="selectDay(this)"><div class="dp-day">SUN</div><div class="dp-num">27</div><div class="dp-dot"></div></div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-left">
+          <div class="card">
+            <div class="card-title">Today's Meals</div>
+            <div class="mh-item" onclick="openMealDetail('avocado')">
+              <div class="mh-emoji">🥑</div>
+              <div class="mh-info"><div class="mh-name">Avocado Grain Bowl</div><div class="mh-time">8:00 AM · Breakfast</div></div>
+              <div class="mh-cal">433 kcal</div>
+            </div>
+            <div class="mh-item" onclick="openMealDetail('salmon')">
+              <div class="mh-emoji">🍣</div>
+              <div class="mh-info"><div class="mh-name">Zesty Salmon Superbowl</div><div class="mh-time">12:45 PM · Lunch</div></div>
+              <div class="mh-cal">640 kcal</div>
+            </div>
+            <div class="mh-item" style="opacity:0.5;cursor:default;">
+              <div class="mh-emoji">🍽️</div>
+              <div class="mh-info"><div class="mh-name">Recovery Dinner</div><div class="mh-time">Planned · 7:00 PM</div></div>
+              <div class="mh-cal">~480 kcal</div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-right">
+          <div class="card">
+            <div class="card-title">Daily Summary</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                  <span style="color:var(--muted)">Total Calories</span>
+                  <span style="font-weight:700;color:var(--navy);">1073 / 2250</span>
+                </div>
+                <div class="macro-bar-track"><div class="macro-bar-fill protein" style="width:48%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                  <span style="color:var(--muted)">Protein</span>
+                  <span style="font-weight:700;color:var(--navy);">64g / 140g</span>
+                </div>
+                <div class="macro-bar-track"><div class="macro-bar-fill protein" style="width:46%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                  <span style="color:var(--muted)">Streak</span>
+                  <span style="font-weight:700;color:var(--green);">12 days 🔥</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /screen-app -->
+
+<!-- JavaScript — load in dependency order -->
+<script src="js/state.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/onboarding.js"></script>
+<script src="js/meal.js"></script>
+<script>
+  // Init
+  renderIngredients();
+</script>
+</body>
+</html>
