@@ -1,0 +1,129 @@
+/* ══════════════════════════════════
+   APP SHELL — LAYOUT
+══════════════════════════════════ */
+#screen-app {
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: white;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 0;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.04);
+}
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-logo {
+  width: 36px; height: 36px;
+  background: var(--green); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(29,185,84,0.3);
+}
+.sidebar-logo svg { width: 20px; height: 20px; fill: white; }
+.sidebar-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: var(--navy); }
+.sidebar-sub { font-size: 11px; color: var(--muted); }
+
+.sidebar-nav { padding: 16px 12px; flex: 1; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  cursor: pointer; transition: all 0.18s;
+  color: var(--muted); font-size: 14px; font-weight: 500;
+  margin-bottom: 2px;
+}
+.nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.nav-item:hover { background: var(--green-pale); color: var(--green); }
+.nav-item.active { background: var(--green-pale); color: var(--green); font-weight: 600; }
+.nav-item.active svg { stroke: var(--green); }
+
+.sidebar-coach {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.coach-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), #0f9d58);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: white; font-weight: 700;
+  flex-shrink: 0;
+}
+.coach-info { flex: 1; }
+.coach-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+.coach-status { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 4px; }
+.coach-status::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--green); border-radius: 50%;
+  display: inline-block; animation: pulse 2s infinite;
+}
+
+/* ── MAIN CONTENT ── */
+.main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 28px;
+  display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-search {
+  flex: 1; max-width: 340px;
+  background: var(--light);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 8px 16px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted);
+  cursor: text;
+}
+.topbar-search svg { width: 15px; height: 15px; flex-shrink: 0; }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.topbar-icon-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--light); border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.2s;
+  position: relative;
+}
+.topbar-icon-btn:hover { background: var(--border); }
+.topbar-icon-btn svg { width: 18px; height: 18px; }
+.notif-dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 8px; height: 8px; background: var(--red); border-radius: 50%;
+  border: 2px solid white;
+}
+.topbar-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #1db954, #0f9d58);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; color: white; cursor: pointer;
+}
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 500; color: var(--muted);
+  cursor: pointer; padding: 6px 12px 6px 4px;
+  border-radius: var(--radius-sm); transition: all 0.2s;
+  border: none; background: none; font-family: 'DM Sans', sans-serif;
+}
+.back-btn:hover { color: var(--green); background: var(--green-pale); }
+.back-btn svg { width: 16px; height: 16px; }
+.topbar-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--navy); }
+
+/* ── TAB PANELS ── */
+.tab-panel { display: none; padding: 28px; }
+.tab-panel.active { display: block; }

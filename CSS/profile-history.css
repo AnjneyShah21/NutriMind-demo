@@ -1,0 +1,69 @@
+/* ══════════════════════════════════
+   PROFILE TAB
+══════════════════════════════════ */
+.profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+.profile-hero-card {
+  background: linear-gradient(135deg, var(--navy), #1a3a5c);
+  border-radius: var(--radius); padding: 28px;
+  color: white; text-align: center;
+}
+.profile-avatar-lg {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), #0f9d58);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+  color: white; margin: 0 auto 12px;
+  border: 3px solid rgba(255,255,255,0.2);
+}
+.profile-hero-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+.profile-hero-sub { font-size: 12px; opacity: 0.6; margin-top: 4px; }
+.profile-stats-row { display: flex; gap: 8px; margin-top: 16px; }
+.ps { flex: 1; background: rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center; }
+.ps .pv { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--green); }
+.ps .pk { font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.goal-prog { margin-top: 18px; text-align: left; }
+.goal-prog-label { font-size: 11px; opacity: 0.6; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.goal-prog-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.goal-prog-fill { height: 100%; background: var(--green); border-radius: 4px; width: 82%; }
+
+.profile-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.metric-card {
+  background: white; border-radius: var(--radius);
+  padding: 16px; box-shadow: var(--card-shadow);
+}
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+.metric-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--navy); }
+.metric-unit { font-size: 12px; color: var(--muted); }
+.metric-change { font-size: 11px; color: var(--green); margin-top: 4px; }
+.metric-bar { height: 4px; background: var(--light); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.metric-bar-fill { height: 100%; background: var(--green); border-radius: 2px; }
+
+.meal-history-list { margin-top: 0; }
+.mh-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; background: white; border-radius: var(--radius-sm);
+  margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.mh-item:hover { box-shadow: var(--card-shadow); transform: translateX(2px); }
+.mh-emoji { font-size: 24px; }
+.mh-info { flex: 1; }
+.mh-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+.mh-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.mh-cal { font-size: 13px; font-weight: 700; color: var(--green); }
+
+/* ══════════════════════════════════
+   HISTORY TAB
+══════════════════════════════════ */
+.history-week { display: flex; gap: 8px; margin-bottom: 24px; }
+.day-pill {
+  flex: 1; background: white; border-radius: var(--radius-sm);
+  padding: 12px 8px; text-align: center; cursor: pointer;
+  border: 1.5px solid var(--border); transition: all 0.2s;
+}
+.day-pill.active { border-color: var(--green); background: var(--green-pale); }
+.day-pill .dp-day { font-size: 10px; text-transform: uppercase; color: var(--muted); font-weight: 600; letter-spacing: 0.5px; }
+.day-pill .dp-num { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--navy); margin: 2px 0; }
+.day-pill.active .dp-num { color: var(--green); }
+.day-pill .dp-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); margin: 0 auto; }
+.day-pill .dp-dot.empty { background: var(--border); }
